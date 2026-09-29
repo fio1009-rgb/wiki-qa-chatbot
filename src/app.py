@@ -90,9 +90,12 @@ PAGE_HTML = r'''<!DOCTYPE html>
     .message.loading::after { content:""; display:inline-block; width:1.1em; animation:dots 1.2s steps(4,end) infinite; }
     @keyframes dots { 0% { content:""; } 25% { content:"."; } 50% { content:".."; } 75%,100% { content:"..."; } }
     .user { display:block; width:fit-content; max-width:min(720px,82%); margin:12px 0 12px auto; background:linear-gradient(135deg,rgba(0,224,255,.75),rgba(76,112,255,.65)); border:1px solid rgba(255,255,255,.35); }
-    .bot { display:block; width:fit-content; max-width:min(720px,82%); margin:12px auto 12px 0; }
+    .bot { display:block; width:fit-content; max-width:min(720px,82%); margin:12px auto 12px 54px; position:relative; }
+    .bot::before { content:""; position:absolute; left:-50px; top:5px; width:38px; height:38px; border-radius:50%; background:rgba(30,89,190,.85) url('/assets/aurora-logo.png') center/30px no-repeat; border:1px solid rgba(127,238,255,.55); box-shadow:0 0 18px rgba(0,224,255,.35); }
     .source-box { margin-top:12px; padding:10px 11px; border:1px solid rgba(255,255,255,.62); border-radius:12px; background:rgba(255,255,255,.3); color:#173b5b; font-size:12px; }
     .source-box strong { display:block; margin-bottom:7px; color:#10213e; font-size:13px; }
+    .source-item { display:flex; justify-content:space-between; gap:12px; margin:7px 0; font-size:11px; } .source-item::after { content:"↗"; color:#1b71d1; font-size:15px; }
+    .feedback { display:flex; align-items:center; gap:15px; margin-top:13px; color:#173b5b; font-size:15px; } .feedback span:last-child { margin-left:auto; font-size:10px; }
     .answer-label { margin-bottom:8px; color:#173b5b; font-size:13px; font-weight:800; letter-spacing:.02em; }
     #error { display:none; margin:12px 18px 0; padding:10px 12px; border-radius:10px; background:rgba(255,108,140,.2); color:#ffe8ee; border:1px solid rgba(255,170,190,.45); font-size:14px; }
     .composer { display:flex; gap:10px; padding:18px clamp(18px,4vw,42px) 22px; background:rgba(5,16,38,.42); border-top:1px solid rgba(255,255,255,.18); }
@@ -101,7 +104,7 @@ PAGE_HTML = r'''<!DOCTYPE html>
     #sendButton { min-width:100px; padding:13px 18px; border:1px solid rgba(255,255,255,.35); border-radius:12px; background:linear-gradient(135deg,#00d9ff,#4d70ff); color:white; font-weight:700; cursor:pointer; box-shadow:0 8px 22px rgba(0,213,255,.24); }
     #question:disabled,#sendButton:disabled { opacity:.6; cursor:not-allowed; }
     @media (max-width:900px) { .app { width:min(900px,calc(100% - 32px)); height:min(800px,calc(100vh - 32px)); margin:16px auto; } .workspace { grid-template-columns:160px minmax(0,1fr); } #chat { padding-inline:28px; } }
-    @media (max-width:600px) { body { background:linear-gradient(145deg,#07152f,#102c58 55%,#160f37); } .app { width:100%; height:100dvh; min-height:0; margin:0; border:0; border-radius:0; box-shadow:none; } header { display:none; } .workspace { display:block; } .sidebar { display:none; } .conversation { height:100dvh; } .main-banner { margin:12px 14px 0; text-align:center; } .main-banner img { width:190px; } #chat { padding:18px 14px; } .message { max-width:90%; font-size:15px; } .composer { padding:12px 12px max(14px,env(safe-area-inset-bottom)); gap:8px; } #question { font-size:15px; padding:12px; } #sendButton { min-width:76px; padding:12px 10px; } }
+    @media (max-width:600px) { body { background:linear-gradient(145deg,#07152f,#102c58 55%,#160f37); } .app { width:100%; height:100dvh; min-height:0; margin:0; border:0; border-radius:0; box-shadow:none; } header { display:none; } .workspace { display:block; } .sidebar { display:none; } .conversation { height:100dvh; } .main-banner { margin:12px 14px 0; text-align:center; } .main-banner img { width:190px; } #chat { padding:18px 14px; } .message { max-width:90%; font-size:15px; } .bot { margin-left:44px; max-width:calc(100% - 44px); } .composer { padding:12px 12px max(14px,env(safe-area-inset-bottom)); gap:8px; } #question { font-size:15px; padding:12px; } #sendButton { min-width:76px; padding:12px 10px; } }
   </style>
 </head>
 <body>
@@ -134,7 +137,8 @@ PAGE_HTML = r'''<!DOCTYPE html>
       const sourceBox=document.createElement('div'); sourceBox.className='source-box';
       const title=document.createElement('strong'); title.textContent='출처'; sourceBox.appendChild(title);
       const labels={'company-overview':'회사소개','hr-policy':'인사부','it-guide':'IT지원','security-policy':'보안팀','travel-policy':'출장관리'};
-      [...new Set(sources)].forEach((source)=>{const match=String(source).match(/^kb:([^#]+)#(.+)$/); const label=match?`${labels[match[1]]||match[1]}-${match[2]}`:String(source); const item=document.createElement('div');item.textContent=label;sourceBox.appendChild(item);});
+      [...new Set(sources)].forEach((source)=>{const match=String(source).match(/^kb:([^#]+)#(.+)$/); const label=match?`${labels[match[1]]||match[1]}-${match[2]}`:String(source); const item=document.createElement('div');item.className='source-item';item.textContent=label;sourceBox.appendChild(item);});
+      const feedback=document.createElement('div'); feedback.className='feedback'; feedback.innerHTML='<span>♧</span><span>♧</span><span>▣</span><span>이 답변이 도움이 되었나요?</span>'; container.appendChild(feedback);
       container.appendChild(sourceBox); scrollToBottom();
     }
     function showError(message){
