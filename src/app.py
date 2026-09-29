@@ -77,9 +77,10 @@ PAGE_HTML = r'''<!DOCTYPE html>
     .loading-sources div { margin:4px 0; font-size:11px; }
     .message.loading::after { content:""; display:inline-block; width:1.1em; animation:dots 1.2s steps(4,end) infinite; }
     @keyframes dots { 0% { content:""; } 25% { content:"."; } 50% { content:".."; } 75%,100% { content:"..."; } }
-    .user { margin-left:auto; background:linear-gradient(135deg,rgba(0,224,255,.75),rgba(76,112,255,.65)); border:1px solid rgba(255,255,255,.35); } .bot { margin-right:auto; background:rgba(255,255,255,.88); color:#10213e; border:1px solid rgba(255,255,255,.55); box-shadow:0 10px 30px rgba(0,0,0,.14); }
-    .source-box { margin-top:9px; padding-top:8px; border-top:1px solid rgba(25,58,99,.18); color:#315071; font-size:12px; }
-    .answer-label { margin-bottom:7px; color:#28628a; font-size:12px; font-weight:800; letter-spacing:.02em; }
+    .user { margin-left:auto; background:linear-gradient(135deg,rgba(0,224,255,.75),rgba(76,112,255,.65)); border:1px solid rgba(255,255,255,.35); } .bot { margin-right:auto; background:linear-gradient(145deg,rgba(184,249,255,.82),rgba(155,215,255,.62) 55%,rgba(205,174,255,.58)); color:#10213e; border:1px solid rgba(157,247,255,.82); box-shadow:0 14px 34px rgba(0,0,0,.2); }
+    .source-box { margin-top:12px; padding:10px 11px; border:1px solid rgba(255,255,255,.62); border-radius:12px; background:rgba(255,255,255,.3); color:#173b5b; font-size:12px; }
+    .source-box strong { display:block; margin-bottom:7px; color:#10213e; font-size:13px; }
+    .answer-label { margin-bottom:8px; color:#173b5b; font-size:13px; font-weight:800; letter-spacing:.02em; }
     #error { display:none; margin:12px 18px 0; padding:10px 12px; border-radius:10px; background:rgba(255,108,140,.2); color:#ffe8ee; border:1px solid rgba(255,170,190,.45); font-size:14px; }
     .composer { display:flex; gap:10px; padding:18px clamp(18px,4vw,42px) 22px; background:rgba(5,16,38,.42); border-top:1px solid rgba(255,255,255,.18); }
     #question { flex:1; min-width:0; padding:13px 14px; border:1px solid rgba(255,255,255,.38); border-radius:12px; font-size:16px; outline:none; color:#f8fbff; background:rgba(255,255,255,.13); }
@@ -118,7 +119,7 @@ PAGE_HTML = r'''<!DOCTYPE html>
     function appendSources(container,sources){
       if(!Array.isArray(sources)||sources.length===0)return;
       const sourceBox=document.createElement('div'); sourceBox.className='source-box';
-      const title=document.createElement('strong'); title.textContent='출처'; sourceBox.appendChild(title);
+      const title=document.createElement('strong'); title.textContent='Sources'; sourceBox.appendChild(title);
       sources.forEach((source)=>{const item=document.createElement('div');item.textContent=source;sourceBox.appendChild(item);});
       container.appendChild(sourceBox); scrollToBottom();
     }
