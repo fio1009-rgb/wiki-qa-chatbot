@@ -1,7 +1,11 @@
 from http.server import BaseHTTPRequestHandler
+import os
+import sys
 from urllib.parse import parse_qs, urlparse
 
-from src.app import ERROR_MESSAGE, PAGE_HTML, format_sse, qa_service, stream_answer
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src")))
+
+from app import ERROR_MESSAGE, PAGE_HTML, format_sse, qa_service, stream_answer
 
 
 class handler(BaseHTTPRequestHandler):
