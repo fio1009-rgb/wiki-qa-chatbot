@@ -55,7 +55,7 @@ PAGE_HTML = r'''<!DOCTYPE html>
     body { margin:0; min-height:100vh; font-family:"Spoqa Han Sans Neo","Pretendard","Noto Sans KR",Arial,sans-serif; background:radial-gradient(circle at 12% 15%,#1d5d9b 0,transparent 32%),radial-gradient(circle at 88% 18%,#6b2d9c 0,transparent 30%),linear-gradient(135deg,#07152f,#102c58 48%,#160f37); color:#f8fbff; }
     .app { width:min(1240px,calc(100% - 48px)); height:min(820px,calc(100vh - 48px)); min-height:560px; margin:24px auto; display:grid; grid-template-rows:auto 1fr; background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.06)); border:1px solid rgba(255,255,255,.34); border-radius:22px; overflow:hidden; box-shadow:0 24px 80px rgba(0,0,0,.35); backdrop-filter:blur(22px); }
     header { display:block; padding:10px 22px; border-bottom:1px solid rgba(255,255,255,.2); background:linear-gradient(90deg,rgba(30,91,145,.55),rgba(88,42,137,.5)); }
-    header .brand { display:none; } header .topbar { justify-content:flex-end; } header p { display:none; }
+    header .brand { display:flex; } header .topbar { justify-content:space-between; } header p { display:none; }
     .topbar { display:flex; align-items:center; justify-content:space-between; gap:16px; }
     .brand { display:flex; align-items:center; gap:10px; } .brand-mark { content:url('/assets/aurora-logo.png'); width:34px; height:34px; object-fit:contain; filter:drop-shadow(0 0 8px rgba(0,224,255,.7)); } .brand h1 { display:block; }
     .slogan-wrap { width:min(300px,34vw); padding:7px 12px; border:1px solid rgba(255,255,255,.28); border-radius:13px; background:rgba(255,255,255,.12); backdrop-filter:blur(12px); }
