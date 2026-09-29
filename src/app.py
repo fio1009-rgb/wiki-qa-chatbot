@@ -50,20 +50,22 @@ PAGE_HTML = r'''<!DOCTYPE html>
   <title>오로라 모빌리티 사내 위키 QA</title>
   <style>
     * { box-sizing: border-box; }
-    body { margin:0; min-height:100vh; font-family:Arial,sans-serif; background:#f4f6f8; color:#1f2937; }
-    .app { width:min(760px,calc(100% - 32px)); margin:32px auto; background:white; border:1px solid #d9dee5; border-radius:14px; overflow:hidden; }
-    header { padding:20px 22px; border-bottom:1px solid #e5e7eb; }
-    h1 { margin:0 0 6px; font-size:22px; } header p { margin:0; color:#6b7280; font-size:14px; }
-    #chat { height:460px; overflow-y:auto; padding:20px; background:#fafafa; }
-    .message { max-width:82%; margin:10px 0; padding:11px 13px; border-radius:12px; white-space:pre-wrap; line-height:1.5; }
-    .user { margin-left:auto; background:#dbeafe; } .bot { margin-right:auto; background:white; border:1px solid #e5e7eb; }
-    .source-box { margin-top:9px; padding-top:8px; border-top:1px solid #e5e7eb; color:#4b5563; font-size:12px; }
-    #error { display:none; margin:12px 18px 0; padding:10px 12px; border-radius:8px; background:#fef2f2; color:#b91c1c; font-size:14px; }
-    .composer { display:flex; gap:8px; padding:16px 18px 18px; }
-    #question { flex:1; min-width:0; padding:11px 12px; border:1px solid #cbd5e1; border-radius:8px; font-size:15px; }
-    #sendButton { min-width:92px; padding:11px 16px; border:0; border-radius:8px; background:#2563eb; color:white; font-weight:700; cursor:pointer; }
+    body { margin:0; min-height:100vh; font-family:"Spoqa Han Sans Neo","Pretendard","Noto Sans KR",Arial,sans-serif; background:radial-gradient(circle at 12% 15%,#1d5d9b 0,transparent 32%),radial-gradient(circle at 88% 18%,#6b2d9c 0,transparent 30%),linear-gradient(135deg,#07152f,#102c58 48%,#160f37); color:#f8fbff; }
+    .app { width:min(1080px,calc(100% - 48px)); height:min(820px,calc(100vh - 48px)); min-height:560px; margin:24px auto; display:grid; grid-template-rows:auto 1fr auto; background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.06)); border:1px solid rgba(255,255,255,.34); border-radius:22px; overflow:hidden; box-shadow:0 24px 80px rgba(0,0,0,.35); backdrop-filter:blur(22px); }
+    header { padding:24px 30px; border-bottom:1px solid rgba(255,255,255,.2); background:rgba(7,21,47,.28); }
+    h1 { margin:0 0 6px; font-size:clamp(22px,2.5vw,30px); letter-spacing:-.03em; } header p { margin:0; color:rgba(241,248,255,.76); font-size:15px; }
+    #chat { min-height:0; overflow-y:auto; padding:28px clamp(20px,5vw,64px); background:rgba(4,14,35,.22); }
+    .message { max-width:min(720px,82%); margin:12px 0; padding:12px 15px; border-radius:14px; white-space:pre-wrap; line-height:1.6; overflow-wrap:anywhere; }
+    .user { margin-left:auto; background:linear-gradient(135deg,rgba(0,224,255,.75),rgba(76,112,255,.65)); border:1px solid rgba(255,255,255,.35); } .bot { margin-right:auto; background:rgba(255,255,255,.88); color:#10213e; border:1px solid rgba(255,255,255,.55); box-shadow:0 10px 30px rgba(0,0,0,.14); }
+    .source-box { margin-top:9px; padding-top:8px; border-top:1px solid rgba(25,58,99,.18); color:#315071; font-size:12px; }
+    #error { display:none; margin:12px 18px 0; padding:10px 12px; border-radius:10px; background:rgba(255,108,140,.2); color:#ffe8ee; border:1px solid rgba(255,170,190,.45); font-size:14px; }
+    .composer { display:flex; gap:10px; padding:18px clamp(18px,4vw,42px) 22px; background:rgba(5,16,38,.42); border-top:1px solid rgba(255,255,255,.18); }
+    #question { flex:1; min-width:0; padding:13px 14px; border:1px solid rgba(255,255,255,.38); border-radius:12px; font-size:16px; outline:none; color:#f8fbff; background:rgba(255,255,255,.13); }
+    #question::placeholder { color:rgba(241,248,255,.7); } #question:focus { border-color:#55e9ff; box-shadow:0 0 0 3px rgba(0,224,255,.18); }
+    #sendButton { min-width:100px; padding:13px 18px; border:1px solid rgba(255,255,255,.35); border-radius:12px; background:linear-gradient(135deg,#00d9ff,#4d70ff); color:white; font-weight:700; cursor:pointer; box-shadow:0 8px 22px rgba(0,213,255,.24); }
     #question:disabled,#sendButton:disabled { opacity:.6; cursor:not-allowed; }
-    @media (max-width:560px) { .app{width:100%;min-height:100vh;margin:0;border:0;border-radius:0} #chat{height:calc(100vh - 190px)} .message{max-width:90%} }
+    @media (max-width:900px) { .app { width:min(760px,calc(100% - 32px)); height:min(760px,calc(100vh - 32px)); margin:16px auto; } #chat { padding-inline:28px; } }
+    @media (max-width:600px) { body { background:linear-gradient(145deg,#07152f,#102c58 55%,#160f37); } .app { width:100%; height:100dvh; min-height:0; margin:0; border:0; border-radius:0; box-shadow:none; } header { padding:18px 18px 16px; } h1 { font-size:21px; } header p { font-size:13px; } #chat { padding:18px 14px; } .message { max-width:90%; font-size:15px; } .composer { padding:12px 12px max(14px,env(safe-area-inset-bottom)); gap:8px; } #question { font-size:15px; padding:12px; } #sendButton { min-width:76px; padding:12px 10px; } }
   </style>
 </head>
 <body>
