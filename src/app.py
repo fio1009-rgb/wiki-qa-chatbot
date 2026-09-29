@@ -63,7 +63,7 @@ PAGE_HTML = r'''<!DOCTYPE html>
     .sidebar { min-width:0; padding:22px 16px; background:rgba(5,16,38,.22); border-right:1px solid rgba(255,255,255,.14); }
     .mascot { display:block; width:130px; height:150px; object-fit:contain; margin:4px auto 16px; filter:drop-shadow(0 0 14px rgba(0,224,255,.55)); }
     .wordmark { display:flex; align-items:center; gap:8px; margin-bottom:18px; font-size:12px; font-weight:800; letter-spacing:.08em; }
-    .wordmark img { width:30px; height:30px; object-fit:contain; } .nav-item { display:block; width:100%; margin:5px 0; padding:9px 10px; border:1px solid transparent; border-radius:9px; background:transparent; color:#eefaff; font-size:12px; text-align:left; cursor:pointer; } .nav-item:hover,.nav-item:focus-visible { background:rgba(0,224,255,.16); border-color:rgba(127,238,255,.42); outline:none; }
+    .wordmark img { width:30px; height:30px; object-fit:contain; } .nav-item { display:block; width:100%; margin:5px 0; padding:9px 10px; border:1px solid transparent; border-radius:9px; background:transparent; color:#eefaff; font-size:12px; text-align:left; cursor:pointer; } .nav-item:hover,.nav-item:focus-visible,.nav-item.active { background:rgba(0,224,255,.16); border-color:rgba(127,238,255,.42); outline:none; }
     .eyebrow { margin:0 0 10px; color:#7feeff; font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
     .eyebrow small { display:block; margin-top:4px; color:rgba(241,248,255,.68); font-size:9px; font-weight:500; letter-spacing:.02em; text-transform:none; }
     .side-title { margin:0 0 18px; font-size:14px; line-height:1.45; } .hint { margin:0 0 10px; color:rgba(241,248,255,.65); font-size:11px; }
@@ -105,7 +105,7 @@ PAGE_HTML = r'''<!DOCTYPE html>
   <main class="app">
     <header><div class="topbar"><div class="brand"><img class="brand-mark" src="/assets/aurora-logo.png" alt="오로라 로고"><h1>오로라 모빌리티 사내 위키 QA</h1></div><div class="slogan-wrap"><img class="slogan-image" src="/assets/aurora-slogan.png" alt="이동의 미래를 만드는 지식 파트너 Knowledge Partner for the Future of Mobility"></div></div><p>사내 규정과 업무 안내를 질문해 보세요.</p></header>
     <div class="workspace">
-      <aside class="sidebar"><div class="wordmark"><img src="/assets/aurora-logo.png" alt="오로라 로고"><span>AURORA<br>MOBILITY</span></div><button class="nav-item">⌂ 홈</button><button class="nav-item">⌕ 문서 검색</button><button class="nav-item">☆ 즐겨찾기</button><button class="nav-item">◷ 최근 대화</button><button class="nav-item">? 서비스 안내</button><img class="mascot" src="/assets/aurora-mascot.png" alt="오로라 안내 캐릭터"><p class="hint">예시 질문</p><button class="suggestion">연차는 매년 며칠 부여되나요?</button><button class="suggestion">사용하지 않은 연차는 며칠까지 이월할 수 있나요?</button><button class="suggestion">국내 출장 교통비와 숙박비 정산 기준은 무엇인가요?</button></aside>
+      <aside class="sidebar"><div class="wordmark"><img src="/assets/aurora-logo.png" alt="오로라 로고"><span>AURORA<br>MOBILITY</span></div><button class="nav-item active" data-action="home">⌂ 홈</button><button class="nav-item" data-action="search">⌕ 문서 검색</button><button class="nav-item" data-action="favorites">☆ 즐겨찾기</button><button class="nav-item" data-action="recent">◷ 최근 대화</button><button class="nav-item" data-action="help">? 서비스 안내</button><img class="mascot" src="/assets/aurora-mascot.png" alt="오로라 안내 캐릭터"><p class="hint">예시 질문</p><button class="suggestion">연차는 매년 며칠 부여되나요?</button><button class="suggestion">사용하지 않은 연차는 며칠까지 이월할 수 있나요?</button><button class="suggestion">국내 출장 교통비와 숙박비 정산 기준은 무엇인가요?</button></aside>
       <section class="conversation"><div class="main-banner"><img src="/assets/aurora-slogan.png" alt="이동의 미래를 만드는 지식 파트너"></div><section id="chat" aria-live="polite"></section><div id="error" role="alert"></div><div class="composer"><input id="question" type="text" placeholder="질문을 입력하세요..." autocomplete="off"><button id="sendButton" type="button">전송</button></div></section>
     </div>
   </main>
@@ -178,6 +178,8 @@ PAGE_HTML = r'''<!DOCTYPE html>
     sendButton.addEventListener('click',ask);
     questionInput.addEventListener('keydown',(event)=>{if(event.key==='Enter')ask();});
     document.querySelectorAll('.suggestion').forEach((button)=>button.addEventListener('click',()=>{questionInput.value=button.textContent.trim(); ask();}));
+    const navMessages={favorites:'즐겨찾기 기능을 준비 중입니다.',recent:'최근 대화 기능을 준비 중입니다.',help:'이 서비스는 사내 위키 문서를 바탕으로 답변합니다.'};
+    document.querySelectorAll('.nav-item').forEach((button)=>button.addEventListener('click',()=>{document.querySelectorAll('.nav-item').forEach((item)=>item.classList.remove('active'));button.classList.add('active'); const action=button.dataset.action; if(action==='home'){showError(''); chat.scrollTop=0;} else if(action==='search'){questionInput.focus(); questionInput.placeholder='문서 내용을 질문해 보세요...';} else {showError(navMessages[action]||'');}}));
   </script>
 </body>
 </html>'''
