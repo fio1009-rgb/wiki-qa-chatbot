@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """사내 위키 문서를 검색하고 답변을 만드는 기능입니다."""
 import json
+import re
 import time
 from pathlib import Path
 
@@ -82,6 +83,28 @@ def _find_section(index, doc_name, heading):
     return None
 
 
+def _fallback_section(index, question):
+    tokens = set(re.findall(r"[가-힣A-Za-z0-9]{2,}", str(question).lower()))
+    best = None
+    best_score = 0
+    for document in index:
+        for section in document.get("sections", []):
+            searchable = " ".join([
+                str(document.get("title", "")),
+                str(section.get("heading", "")),
+                str(section.get("text", "")),
+            ]).lower()
+            score = sum(1 for token in tokens if token in searchable)
+            if score > best_score:
+                best_score = score
+                best = {
+                    "doc": document.get("doc", ""),
+                    "heading": section.get("heading", ""),
+                    "text": section.get("text", ""),
+                }
+    return best
+
+
 def answer(question, mode=None):
     started = time.perf_counter()
     index = load_index()
@@ -89,6 +112,8 @@ def answer(question, mode=None):
     section = None
     if isinstance(selected, dict):
         section = _find_section(index, str(selected.get("doc", "")).strip(), str(selected.get("heading", "")).strip())
+    if section is None:
+        section = _fallback_section(index, question)
 
     if not section:
         answer_text = "해당 정보를 찾을 수 없습니다."
