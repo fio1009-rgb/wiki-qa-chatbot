@@ -56,7 +56,7 @@ PAGE_HTML = r'''<!DOCTYPE html>
     .app { width:min(1240px,calc(100% - 48px)); height:min(820px,calc(100vh - 48px)); min-height:560px; margin:24px auto; display:grid; grid-template-rows:1fr; background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.06)); border:1px solid rgba(255,255,255,.34); border-radius:22px; overflow:hidden; box-shadow:0 24px 80px rgba(0,0,0,.35); backdrop-filter:blur(22px); }
     header { display:none; }
     .topbar { display:flex; align-items:center; justify-content:space-between; gap:16px; }
-    .brand { display:flex; align-items:center; gap:10px; } .brand-mark { width:34px; height:34px; object-fit:contain; filter:drop-shadow(0 0 8px rgba(0,224,255,.7)); }
+    .brand { display:flex; align-items:center; gap:10px; } .brand-mark { content:url('/assets/aurora-wordmark.png'); width:150px; height:auto; object-fit:contain; filter:drop-shadow(0 0 8px rgba(0,224,255,.45)); } .brand h1 { display:none; }
     .slogan-wrap { width:min(300px,34vw); padding:7px 12px; border:1px solid rgba(255,255,255,.28); border-radius:13px; background:rgba(255,255,255,.12); backdrop-filter:blur(12px); }
     .slogan-image { width:100%; height:auto; display:block; object-fit:contain; }
     .workspace { min-height:0; display:grid; grid-template-columns:210px minmax(0,1fr); }
