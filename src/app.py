@@ -71,11 +71,16 @@ PAGE_HTML = r'''<!DOCTYPE html>
     h1 { margin:0 0 6px; font-size:clamp(22px,2.5vw,30px); letter-spacing:-.03em; } header p { margin:0; color:rgba(241,248,255,.76); font-size:15px; }
     #chat { min-height:0; overflow-y:auto; padding:28px clamp(20px,5vw,64px); background:rgba(4,14,35,.22); }
     .message { max-width:min(720px,82%); margin:12px 0; padding:12px 15px; border-radius:14px; white-space:pre-wrap; line-height:1.6; overflow-wrap:anywhere; }
-    .message.loading { min-width:260px; color:#173257; background:rgba(255,255,255,.88); background-image:url('/assets/aurora-logo.png'); background-repeat:no-repeat; background-size:28px; background-position:12px center; padding-left:50px; }
+    .message.loading { min-width:320px; color:#10213e; background:linear-gradient(145deg,rgba(177,247,255,.82),rgba(147,211,255,.52) 55%,rgba(204,171,255,.48)); background-image:url('/assets/aurora-logo.png'),linear-gradient(145deg,rgba(177,247,255,.82),rgba(147,211,255,.52) 55%,rgba(204,171,255,.48)); background-repeat:no-repeat; background-size:28px,cover; background-position:12px 13px,center; padding-left:50px; border-color:rgba(151,249,255,.8); }
+    .loading-copy { line-height:1.55; }
+    .loading-sources { margin-top:12px; padding:10px 11px; border:1px solid rgba(255,255,255,.58); border-radius:12px; background:rgba(255,255,255,.28); }
+    .loading-sources strong { display:block; margin-bottom:7px; font-size:13px; }
+    .loading-sources div { margin:4px 0; font-size:11px; }
     .message.loading::after { content:""; display:inline-block; width:1.1em; animation:dots 1.2s steps(4,end) infinite; }
     @keyframes dots { 0% { content:""; } 25% { content:"."; } 50% { content:".."; } 75%,100% { content:"..."; } }
     .user { margin-left:auto; background:linear-gradient(135deg,rgba(0,224,255,.75),rgba(76,112,255,.65)); border:1px solid rgba(255,255,255,.35); } .bot { margin-right:auto; background:rgba(255,255,255,.88); color:#10213e; border:1px solid rgba(255,255,255,.55); box-shadow:0 10px 30px rgba(0,0,0,.14); }
     .source-box { margin-top:9px; padding-top:8px; border-top:1px solid rgba(25,58,99,.18); color:#315071; font-size:12px; }
+    .answer-label { margin-bottom:7px; color:#28628a; font-size:12px; font-weight:800; letter-spacing:.02em; }
     #error { display:none; margin:12px 18px 0; padding:10px 12px; border-radius:10px; background:rgba(255,108,140,.2); color:#ffe8ee; border:1px solid rgba(255,170,190,.45); font-size:14px; }
     .composer { display:flex; gap:10px; padding:18px clamp(18px,4vw,42px) 22px; background:rgba(5,16,38,.42); border-top:1px solid rgba(255,255,255,.18); }
     #question { flex:1; min-width:0; padding:13px 14px; border:1px solid rgba(255,255,255,.38); border-radius:12px; font-size:16px; outline:none; color:#f8fbff; background:rgba(255,255,255,.13); }
@@ -108,6 +113,7 @@ PAGE_HTML = r'''<!DOCTYPE html>
     function scrollToBottom(){chat.scrollTop=chat.scrollHeight;}
     function appendMessage(role,text){
       const box=document.createElement('div'); box.className='message '+role;
+      let label=null; if(role==='bot'){label=document.createElement('div'); label.className='answer-label'; label.textContent='답변 요약'; box.appendChild(label);}
       const textBox=document.createElement('div'); textBox.textContent=text;
       box.appendChild(textBox); chat.appendChild(box); scrollToBottom(); return {box,textBox};
     }
@@ -137,10 +143,12 @@ PAGE_HTML = r'''<!DOCTYPE html>
       const question=questionInput.value.trim();
       if(!question){showError('질문을 입력해 주세요.');return;}
       showError(''); appendMessage('user',question); questionInput.value=''; setLoading(true);
-      const bot=appendMessage('bot','답변을 생성하는 중'); bot.box.classList.add('loading');
+      const bot=appendMessage('bot',''); bot.box.classList.add('loading'); bot.label=bot.box.querySelector('.answer-label'); if(bot.label)bot.label.textContent='AI Thinking 중입니다.';
+      bot.textBox.className='loading-copy'; bot.textBox.textContent='오로라 모빌리티 임직원을 위한 QA 시스템입니다.\n답변이 생성되는 중입니다...\n답변이 완료되면 이곳에 답변이 표시됩니다.\n답변이 길어질 수 있으니 잠시만 기다려주세요.';
+      bot.loadingSources=document.createElement('div'); bot.loadingSources.className='loading-sources'; bot.loadingSources.innerHTML='<strong>Sources</strong><div>◉ 오로라 모빌리티 사내 위키 QA</div><div>◉ 오로라 모빌리티 사내 위키 QA</div>'; bot.box.appendChild(bot.loadingSources);
       activeStream=new EventSource(BASE_PATH+'stream?q='+encodeURIComponent(question));
       activeStream.addEventListener('chunk',(event)=>{
-        const data=JSON.parse(event.data); if(bot.box.classList.contains('loading')){bot.box.classList.remove('loading'); bot.textBox.textContent='';} bot.textBox.textContent+=data.text||''; scrollToBottom();
+        const data=JSON.parse(event.data); if(bot.box.classList.contains('loading')){bot.box.classList.remove('loading'); bot.textBox.className=''; bot.textBox.textContent=''; if(bot.label)bot.label.textContent='답변 요약'; if(bot.loadingSources){bot.loadingSources.remove(); bot.loadingSources=null;}} bot.textBox.textContent+=data.text||''; scrollToBottom();
       });
       activeStream.addEventListener('sources',(event)=>{
         const data=JSON.parse(event.data); appendSources(bot.box,data.sources);
