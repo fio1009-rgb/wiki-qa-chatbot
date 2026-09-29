@@ -147,7 +147,7 @@ PAGE_HTML = r'''<!DOCTYPE html>
       if(!question){showError('질문을 입력해 주세요.');return;}
       showError(''); appendMessage('user',question); questionInput.value=''; setLoading(true);
       const bot=appendMessage('bot',''); bot.box.classList.add('loading'); bot.label=bot.box.querySelector('.answer-label'); if(bot.label)bot.label.textContent='AI Thinking 중입니다.';
-      bot.textBox.className='loading-copy'; bot.textBox.textContent='오로라 모빌리티 임직원을 위한 QA 시스템입니다.\n답변이 생성되는 중입니다...\n답변이 완료되면 이곳에 답변이 표시됩니다.\n답변이 길어질 수 있으니 잠시만 기다려주세요.';
+      bot.textBox.className='loading-copy'; bot.textBox.textContent='오로라 모빌리티 사내 위키 QA입니다.\n답변을 생성하고 있습니다.\n잠시만 기다려주세요.';
       bot.loadingSources=document.createElement('div'); bot.loadingSources.className='loading-sources'; bot.loadingSources.innerHTML='<strong>출처</strong><div>◉ 오로라 모빌리티 사내 위키 QA</div>'; bot.box.appendChild(bot.loadingSources);
       activeStream=new EventSource(BASE_PATH+'stream?q='+encodeURIComponent(question));
       activeStream.addEventListener('chunk',(event)=>{
