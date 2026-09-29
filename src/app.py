@@ -56,6 +56,9 @@ PAGE_HTML = r'''<!DOCTYPE html>
     h1 { margin:0 0 6px; font-size:clamp(22px,2.5vw,30px); letter-spacing:-.03em; } header p { margin:0; color:rgba(241,248,255,.76); font-size:15px; }
     #chat { min-height:0; overflow-y:auto; padding:28px clamp(20px,5vw,64px); background:rgba(4,14,35,.22); }
     .message { max-width:min(720px,82%); margin:12px 0; padding:12px 15px; border-radius:14px; white-space:pre-wrap; line-height:1.6; overflow-wrap:anywhere; }
+    .message.loading { min-width:260px; color:#173257; background:rgba(255,255,255,.82); }
+    .message.loading::after { content:""; display:inline-block; width:1.1em; animation:dots 1.2s steps(4,end) infinite; }
+    @keyframes dots { 0% { content:""; } 25% { content:"."; } 50% { content:".."; } 75%,100% { content:"..."; } }
     .user { margin-left:auto; background:linear-gradient(135deg,rgba(0,224,255,.75),rgba(76,112,255,.65)); border:1px solid rgba(255,255,255,.35); } .bot { margin-right:auto; background:rgba(255,255,255,.88); color:#10213e; border:1px solid rgba(255,255,255,.55); box-shadow:0 10px 30px rgba(0,0,0,.14); }
     .source-box { margin-top:9px; padding-top:8px; border-top:1px solid rgba(25,58,99,.18); color:#315071; font-size:12px; }
     #error { display:none; margin:12px 18px 0; padding:10px 12px; border-radius:10px; background:rgba(255,108,140,.2); color:#ffe8ee; border:1px solid rgba(255,170,190,.45); font-size:14px; }
@@ -117,10 +120,10 @@ PAGE_HTML = r'''<!DOCTYPE html>
       const question=questionInput.value.trim();
       if(!question){showError('질문을 입력해 주세요.');return;}
       showError(''); appendMessage('user',question); questionInput.value=''; setLoading(true);
-      const bot=appendMessage('bot','');
+      const bot=appendMessage('bot','답변을 생성하는 중'); bot.box.classList.add('loading');
       activeStream=new EventSource(BASE_PATH+'stream?q='+encodeURIComponent(question));
       activeStream.addEventListener('chunk',(event)=>{
-        const data=JSON.parse(event.data); bot.textBox.textContent+=data.text||''; scrollToBottom();
+        const data=JSON.parse(event.data); if(bot.box.classList.contains('loading')){bot.box.classList.remove('loading'); bot.textBox.textContent='';} bot.textBox.textContent+=data.text||''; scrollToBottom();
       });
       activeStream.addEventListener('sources',(event)=>{
         const data=JSON.parse(event.data); appendSources(bot.box,data.sources);
