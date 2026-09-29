@@ -127,3 +127,25 @@ def complete(question, context):
         },
         {"role": "user", "content": str(question)},
     ])
+
+
+def answer_with_source(question, context):
+    content = _post([
+        {
+            "role": "system",
+            "content": (
+                "제공된 사내 위키만 근거로 한국어 답변을 작성하세요. "
+                "답변과 가장 관련 있는 문서의 doc, heading을 함께 JSON으로 반환하세요. "
+                "답을 찾지 못하면 answer는 '해당 정보를 찾을 수 없습니다.'로 하고 doc과 heading은 빈 문자열로 두세요. "
+                "답변은 자연스러운 한국어로 쓰고, 정보가 바뀌는 지점마다 줄바꿈하세요. "
+                "Markdown 표와 파이프 문자는 사용하지 마세요. 형식은 "
+                '{"answer":"답변","doc":"문서 ID","heading":"항목"}입니다.\n\n'
+                f"[사내 위키]\n{context}"
+            ),
+        },
+        {"role": "user", "content": str(question)},
+    ])
+    parsed = _parse_json_object(content)
+    if parsed is None:
+        raise RuntimeError("답변 결과를 해석하지 못했습니다.")
+    return parsed

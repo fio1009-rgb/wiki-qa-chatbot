@@ -69,6 +69,14 @@ def _toc(index):
     return "\n\n".join(blocks)
 
 
+def _knowledge(index):
+    blocks = []
+    for document in index:
+        for section in document.get("sections", []):
+            blocks.append(f"[doc={document['doc']}][heading={section['heading']}]\n{section['text']}")
+    return "\n\n".join(blocks)
+
+
 def _find_section(index, doc_name, heading):
     for document in index:
         if document.get("doc") != doc_name:
@@ -108,21 +116,14 @@ def _fallback_section(index, question):
 def answer(question, mode=None):
     started = time.perf_counter()
     index = load_index()
-    selected = llm.reasoning_search(question, _toc(index))
-    section = None
-    if isinstance(selected, dict):
-        section = _find_section(index, str(selected.get("doc", "")).strip(), str(selected.get("heading", "")).strip())
-    if section is None:
-        section = _fallback_section(index, question)
-
-    if not section:
+    result = llm.answer_with_source(question, _knowledge(index))
+    section = _find_section(index, str(result.get("doc", "")).strip(), str(result.get("heading", "")).strip())
+    answer_text = str(result.get("answer", "")).strip()
+    if not section or not answer_text or answer_text == NO_KNOWLEDGE_REPLY:
         answer_text = "해당 정보를 찾을 수 없습니다."
         sources = []
     else:
-        answer_text = llm.complete(question, section.get("text", "")).strip()
         sources = [f"kb:{section['doc']}#{section['heading']}"] if answer_text else []
-        if not answer_text:
-            answer_text = "해당 정보를 찾을 수 없습니다."
 
     return {
         "answer": answer_text,
