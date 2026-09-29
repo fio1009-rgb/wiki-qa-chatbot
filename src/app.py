@@ -98,7 +98,7 @@ PAGE_HTML = r'''<!DOCTYPE html>
     .source-box { margin-top:12px; padding:10px 11px; border:1px solid rgba(255,255,255,.62); border-radius:12px; background:rgba(255,255,255,.3); color:#173b5b; font-size:12px; }
     .source-box strong { display:block; margin-bottom:7px; color:#10213e; font-size:13px; }
     .source-item { display:flex; justify-content:space-between; gap:12px; margin:7px 0; font-size:11px; } .source-item::after { content:"↗"; color:#1b71d1; font-size:15px; }
-    .feedback { display:flex; align-items:center; gap:15px; margin-top:13px; color:#173b5b; font-size:15px; } .feedback span:last-child { margin-left:auto; font-size:10px; }
+    .feedback { display:flex; align-items:center; gap:9px; margin-top:13px; color:#173b5b; font-size:10px; } .feedback button { border:0; background:transparent; color:#173b5b; padding:2px 0; font-size:10px; cursor:pointer; } .feedback button:hover { color:#075fc2; } .feedback span:last-child { margin-left:auto; font-size:10px; }
     .answer-label { margin-bottom:8px; color:#173b5b; font-size:13px; font-weight:800; letter-spacing:.02em; }
     #error { display:none; margin:12px 18px 0; padding:10px 12px; border-radius:10px; background:rgba(255,108,140,.2); color:#ffe8ee; border:1px solid rgba(255,170,190,.45); font-size:14px; }
     .composer { display:flex; gap:10px; padding:18px clamp(18px,4vw,42px) 22px; background:rgba(5,16,38,.42); border-top:1px solid rgba(255,255,255,.18); }
@@ -141,7 +141,7 @@ PAGE_HTML = r'''<!DOCTYPE html>
       const title=document.createElement('strong'); title.textContent='출처'; sourceBox.appendChild(title);
       const labels={'company-overview':'회사소개','hr-policy':'인사부','it-guide':'IT지원','security-policy':'보안팀','travel-policy':'출장관리'};
       [...new Set(sources)].forEach((source)=>{const match=String(source).match(/^kb:([^#]+)#(.+)$/); const label=match?`${labels[match[1]]||match[1]}-${match[2]}`:String(source); const item=document.createElement('div');item.className='source-item';item.textContent=label;sourceBox.appendChild(item);});
-      const feedback=document.createElement('div'); feedback.className='feedback'; feedback.innerHTML='<span>♧</span><span>♧</span><span>▣</span><span>이 답변이 도움이 되었나요?</span>'; container.appendChild(feedback);
+      const feedback=document.createElement('div'); feedback.className='feedback'; feedback.innerHTML='<button type="button">도움됨</button><button type="button">도움 안 됨</button><button type="button">복사</button><span>이 답변이 도움이 되었나요?</span>'; container.appendChild(feedback);
       container.appendChild(sourceBox); scrollToBottom();
     }
     function showError(message){
