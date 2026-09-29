@@ -134,7 +134,7 @@ PAGE_HTML = r'''<!DOCTYPE html>
     function appendMessage(role,text){
       const box=document.createElement('div'); box.className='message '+role;
       let label=null; if(role==='bot'){label=document.createElement('div'); label.className='answer-label'; label.textContent='답변 요약'; box.appendChild(label);}
-      const textBox=document.createElement('div'); textBox.textContent=text;
+      const textBox=document.createElement('div'); if(role==='bot')textBox.className='answer-body'; textBox.textContent=text;
       box.appendChild(textBox); chat.appendChild(box); scrollToBottom(); return {box,textBox};
     }
     function appendSources(container,sources){
@@ -143,8 +143,8 @@ PAGE_HTML = r'''<!DOCTYPE html>
       const title=document.createElement('strong'); title.textContent='출처'; sourceBox.appendChild(title);
       const labels={'company-overview':'회사소개','hr-policy':'인사부','it-guide':'IT지원','security-policy':'보안팀','travel-policy':'출장관리'};
       [...new Set(sources)].forEach((source)=>{const match=String(source).match(/^kb:([^#]+)#(.+)$/); const label=match?`${labels[match[1]]||match[1]}-${match[2]}`:String(source); const item=document.createElement('div');item.className='source-item';item.textContent=label;sourceBox.appendChild(item);});
-      const feedback=document.createElement('div'); feedback.className='feedback'; feedback.innerHTML='<button type="button"><svg viewBox="0 0 24 24"><path d="M7 10v10H4V10h3Zm0 10h9.5a2 2 0 0 0 1.9-1.4l2.1-6.2A2 2 0 0 0 18.6 10H14l.7-3.1A2.4 2.4 0 0 0 12.4 4L7 10v10Z"/></svg><span class="feedback-label">좋아요</span></button><button type="button"><svg viewBox="0 0 24 24"><path d="M7 14V4H4v10h3Zm0-10h9.5a2 2 0 0 1 1.9 1.4l2.1 6.2A2 2 0 0 1 18.6 14H14l.7 3.1a2.4 2.4 0 0 1-2.3 2.9L7 14V4Z"/></svg><span class="feedback-label">싫어요</span></button><button type="button"><svg viewBox="0 0 24 24"><rect x="8" y="8" width="11" height="12" rx="1"/><path d="M5 16H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v3"/></svg><span class="feedback-label">복사</span></button><span>이 답변이 도움이 되었나요?</span>'; container.appendChild(feedback);
-      const buttons=feedback.querySelectorAll('button'); buttons[0].addEventListener('click',()=>feedback.remove()); buttons[1].addEventListener('click',()=>feedback.remove()); buttons[2].addEventListener('click',async()=>{try{await navigator.clipboard.writeText(container.innerText); }finally{feedback.remove();}});
+      const feedback=document.createElement('div'); feedback.className='feedback'; feedback.innerHTML='<button type="button"><svg viewBox="0 0 24 24"><path d="M7 10v10H4V10h3Zm0 10h9.5a2 2 0 0 0 1.9-1.4l2.1-6.2A2 2 0 0 0 18.6 10H14l.7-3.1A2.4 2.4 0 0 0 12.4 4L7 10v10Z"/></svg><span class="feedback-label">좋아요</span></button><button type="button"><svg viewBox="0 0 24 24"><path d="M7 14V4H4v10h3Zm0-10h9.5a2 2 0 0 1 1.9 1.4l2.1 6.2A2 2 0 0 1 18.6 14H14l.7 3.1a2.4 2.4 0 0 1-2.3 2.9L7 14V4Z"/></svg><span class="feedback-label">싫어요</span></button><button type="button"><svg viewBox="0 0 24 24"><rect x="8" y="8" width="11" height="12" rx="1"/><path d="M5 16H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1 1v3"/></svg><span class="feedback-label">복사</span></button><span>이 답변이 도움이 되었나요?</span>'; container.appendChild(feedback);
+      const buttons=feedback.querySelectorAll('button'); buttons[0].addEventListener('click',()=>feedback.remove()); buttons[1].addEventListener('click',()=>feedback.remove()); buttons[2].addEventListener('click',async()=>{try{await navigator.clipboard.writeText(container.querySelector('.answer-body')?.textContent.trim()||''); }finally{feedback.remove();}});
       container.appendChild(sourceBox); scrollToBottom();
     }
     function showError(message){
