@@ -11,7 +11,7 @@ from app import ERROR_MESSAGE, PAGE_HTML, format_sse, qa_service, stream_answer
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
         parsed = urlparse(self.path)
-        if parsed.path == "/stream":
+        if parsed.path == "/stream" or parse_qs(parsed.query).get("path") == ["stream"]:
             self._stream(parse_qs(parsed.query).get("q", [""])[0])
             return
         self._send_html(PAGE_HTML)
