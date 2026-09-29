@@ -37,7 +37,7 @@ class handler(BaseHTTPRequestHandler):
         payload = json.loads(self.rfile.read(length) or b"{}")
         base = os.environ.get("SUPABASE_URL", "").rstrip("/")
         key = os.environ.get("SUPABASE_ANON_KEY", "")
-        if not base or not key or payload.get("rating") not in ("like", "dislike"):
+        if not base or not key or payload.get("rating") not in ("good", "bad"):
             self._send_json(503, {"error": "feedback_storage_not_configured"})
             return
         data = json.dumps({
