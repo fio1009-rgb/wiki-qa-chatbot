@@ -70,14 +70,14 @@ PAGE_HTML = r'''<!DOCTYPE html>
     h1 { margin:0 0 6px; font-size:clamp(22px,2.5vw,30px); letter-spacing:-.03em; } header p { margin:0; color:rgba(241,248,255,.76); font-size:15px; }
     #chat { min-height:0; overflow-y:auto; padding:28px clamp(20px,5vw,64px); background:rgba(4,14,35,.22); }
     .message { max-width:min(720px,82%); margin:12px 0; padding:12px 15px; border-radius:14px; white-space:pre-wrap; line-height:1.6; overflow-wrap:anywhere; }
-    .message.loading { min-width:320px; color:#10213e; background:linear-gradient(145deg,rgba(177,247,255,.82),rgba(147,211,255,.52) 55%,rgba(204,171,255,.48)); background-image:url('/assets/aurora-logo.png'),linear-gradient(145deg,rgba(177,247,255,.82),rgba(147,211,255,.52) 55%,rgba(204,171,255,.48)); background-repeat:no-repeat; background-size:28px,cover; background-position:12px 13px,center; padding-left:50px; border-color:rgba(151,249,255,.8); }
+    .message.loading,.message.bot { min-width:320px; color:#10213e; background:linear-gradient(145deg,rgba(177,247,255,.82),rgba(147,211,255,.52) 55%,rgba(204,171,255,.48)) !important; background-image:url('/assets/aurora-logo.png'),linear-gradient(145deg,rgba(177,247,255,.82),rgba(147,211,255,.52) 55%,rgba(204,171,255,.48)) !important; background-repeat:no-repeat; background-size:28px,cover; background-position:12px 13px,center; padding-left:50px; border:1px solid rgba(151,249,255,.8) !important; box-shadow:0 14px 34px rgba(0,0,0,.2); backdrop-filter:blur(16px); }
     .loading-copy { line-height:1.55; }
     .loading-sources { margin-top:12px; padding:10px 11px; border:1px solid rgba(255,255,255,.58); border-radius:12px; background:rgba(255,255,255,.28); }
     .loading-sources strong { display:block; margin-bottom:7px; font-size:13px; }
     .loading-sources div { margin:4px 0; font-size:11px; }
     .message.loading::after { content:""; display:inline-block; width:1.1em; animation:dots 1.2s steps(4,end) infinite; }
     @keyframes dots { 0% { content:""; } 25% { content:"."; } 50% { content:".."; } 75%,100% { content:"..."; } }
-    .user { margin-left:auto; background:linear-gradient(135deg,rgba(0,224,255,.75),rgba(76,112,255,.65)); border:1px solid rgba(255,255,255,.35); } .bot { margin-right:auto; background:linear-gradient(145deg,rgba(184,249,255,.82),rgba(155,215,255,.62) 55%,rgba(205,174,255,.58)); color:#10213e; border:1px solid rgba(157,247,255,.82); box-shadow:0 14px 34px rgba(0,0,0,.2); }
+    .user { margin-left:auto; background:linear-gradient(135deg,rgba(0,224,255,.75),rgba(76,112,255,.65)); border:1px solid rgba(255,255,255,.35); }
     .source-box { margin-top:12px; padding:10px 11px; border:1px solid rgba(255,255,255,.62); border-radius:12px; background:rgba(255,255,255,.3); color:#173b5b; font-size:12px; }
     .source-box strong { display:block; margin-bottom:7px; color:#10213e; font-size:13px; }
     .answer-label { margin-bottom:8px; color:#173b5b; font-size:13px; font-weight:800; letter-spacing:.02em; }
