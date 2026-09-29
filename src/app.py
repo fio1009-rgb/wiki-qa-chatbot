@@ -70,7 +70,9 @@ PAGE_HTML = r'''<!DOCTYPE html>
     h1 { margin:0 0 6px; font-size:clamp(22px,2.5vw,30px); letter-spacing:-.03em; } header p { margin:0; color:rgba(241,248,255,.76); font-size:15px; }
     #chat { min-height:0; overflow-y:auto; padding:28px clamp(20px,5vw,64px); background:rgba(4,14,35,.22); }
     .message { max-width:min(720px,82%); margin:12px 0; padding:12px 15px; border-radius:14px; white-space:pre-wrap; line-height:1.6; overflow-wrap:anywhere; }
-    .message.loading,.message.bot { min-width:320px; color:#10213e; background:linear-gradient(145deg,rgba(177,247,255,.82),rgba(147,211,255,.52) 55%,rgba(204,171,255,.48)) !important; background-image:url('/assets/aurora-logo.png'),linear-gradient(145deg,rgba(177,247,255,.82),rgba(147,211,255,.52) 55%,rgba(204,171,255,.48)) !important; background-repeat:no-repeat; background-size:28px,cover; background-position:12px 13px,center; padding-left:50px; border:1px solid rgba(151,249,255,.8) !important; box-shadow:0 14px 34px rgba(0,0,0,.2); backdrop-filter:blur(16px); }
+    .message.loading,.message.bot { min-width:320px; color:#10213e; background:linear-gradient(145deg,rgba(177,247,255,.82),rgba(147,211,255,.52) 55%,rgba(204,171,255,.48)) !important; background-repeat:no-repeat; background-size:cover; background-position:center; padding-left:50px; border:1px solid rgba(151,249,255,.8) !important; box-shadow:0 14px 34px rgba(0,0,0,.2); backdrop-filter:blur(16px); }
+    .message.loading { background-image:url('/assets/aurora-logo.png'),linear-gradient(145deg,rgba(177,247,255,.82),rgba(147,211,255,.52) 55%,rgba(204,171,255,.48)) !important; background-size:28px,cover; background-position:12px 13px,center; padding-left:50px; }
+    .message.bot { background-image:linear-gradient(145deg,rgba(177,247,255,.82),rgba(147,211,255,.52) 55%,rgba(204,171,255,.48)) !important; padding-left:15px; }
     .loading-copy { line-height:1.55; }
     .loading-sources { margin-top:12px; padding:10px 11px; border:1px solid rgba(255,255,255,.58); border-radius:12px; background:rgba(255,255,255,.28); }
     .loading-sources strong { display:block; margin-bottom:7px; font-size:13px; }
@@ -120,7 +122,8 @@ PAGE_HTML = r'''<!DOCTYPE html>
       if(!Array.isArray(sources)||sources.length===0)return;
       const sourceBox=document.createElement('div'); sourceBox.className='source-box';
       const title=document.createElement('strong'); title.textContent='출처'; sourceBox.appendChild(title);
-      [...new Set(sources)].forEach((source)=>{const item=document.createElement('div');item.textContent=source;sourceBox.appendChild(item);});
+      const labels={'company-overview':'회사소개','hr-policy':'인사부','it-guide':'IT지원','security-policy':'보안팀','travel-policy':'출장관리'};
+      [...new Set(sources)].forEach((source)=>{const match=String(source).match(/^kb:([^#]+)#(.+)$/); const label=match?`${labels[match[1]]||match[1]}-${match[2]}`:String(source); const item=document.createElement('div');item.textContent=label;sourceBox.appendChild(item);});
       container.appendChild(sourceBox); scrollToBottom();
     }
     function showError(message){
