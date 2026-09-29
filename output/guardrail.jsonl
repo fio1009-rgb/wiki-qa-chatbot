@@ -1,0 +1,10 @@
+{"timestamp": "2026-08-05T04:26:53.072935+00:00", "status": "passed", "reason": "ok", "question_length": 5, "source_count": 1}
+{"timestamp": "2026-08-05T04:35:15.606209+00:00", "status": "passed", "reason": "ok", "question_length": 2, "source_count": 1}
+{"timestamp": "2026-08-05T04:35:22.705084+00:00", "status": "passed", "reason": "ok", "question_length": 5, "source_count": 1}
+{"timestamp": "2026-09-29T01:16:17.870663+00:00", "status": "review_required", "reason": "call_failed", "question_length": 16, "source_count": 0}
+{"timestamp": "2026-09-29T01:22:11.618586+00:00", "status": "blocked", "reason": "no_knowledge", "question_length": 16, "source_count": 0}
+{"timestamp": "2026-09-29T01:23:16.765469+00:00", "status": "passed", "reason": "ok", "question_length": 28, "source_count": 1}
+{"timestamp": "2026-09-29T01:24:19.664438+00:00", "status": "blocked", "reason": "no_knowledge", "question_length": 31, "source_count": 0}
+{"timestamp": "2026-09-29T01:24:30.909117+00:00", "status": "passed", "reason": "ok", "question_length": 16, "source_count": 1}
+{"timestamp": "2026-09-29T01:24:41.650804+00:00", "status": "passed", "reason": "ok", "question_length": 27, "source_count": 1}
+{"timestamp": "2026-09-29T01:24:51.004441+00:00", "status": "passed", "reason": "ok", "question_length": 28, "source_count": 1}
