@@ -140,7 +140,7 @@ PAGE_HTML = r'''<!DOCTYPE html>
       const textBox=document.createElement('div'); if(role==='bot')textBox.className='answer-body'; textBox.textContent=text;
       box.appendChild(textBox); chat.appendChild(box); scrollToBottom(); return {box,textBox};
     }
-    function appendSources(container,sources){
+    function appendSources(container,sources,questionText,answerText){
       if(!Array.isArray(sources)||sources.length===0)return;
       const sourceBox=document.createElement('div'); sourceBox.className='source-box';
       const title=document.createElement('strong'); title.textContent='출처'; sourceBox.appendChild(title);
@@ -148,7 +148,7 @@ PAGE_HTML = r'''<!DOCTYPE html>
       [...new Set(sources)].forEach((source)=>{const match=String(source).match(/^kb:([^#]+)#(.+)$/); const label=match?`${labels[match[1]]||match[1]}-${match[2]}`:String(source); const item=document.createElement('div');item.className='source-item';item.textContent=label;sourceBox.appendChild(item);});
       const feedback=document.createElement('div'); feedback.className='feedback'; feedback.innerHTML='<button type="button" data-rating="like"><span class="feedback-label">좋아요</span></button><button type="button" data-rating="dislike"><span class="feedback-label">싫어요</span></button><button type="button" data-copy="1"><span class="feedback-label">복사</span></button><span>이 답변이 도움이 되었나요?</span>'; container.appendChild(feedback);
       const buttons=feedback.querySelectorAll('button'); buttons[0].addEventListener('click',()=>saveFeedback('like')); buttons[1].addEventListener('click',()=>saveFeedback('dislike')); buttons[2].addEventListener('click',async()=>{try{await navigator.clipboard.writeText(container.querySelector('.answer-body')?.textContent.trim()||''); }finally{feedback.remove();}});
-      function saveFeedback(rating){const payload={question,answer:bot.textBox.textContent,source:[...container.querySelectorAll('.source-item')].map((item)=>item.textContent).join(', '),rating}; feedback.remove(); fetch(BASE_PATH+'feedback',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).catch(()=>{});}
+      function saveFeedback(rating){const payload={question:questionText,answer:answerText,source:[...container.querySelectorAll('.source-item')].map((item)=>item.textContent).join(', '),rating}; feedback.remove(); fetch(BASE_PATH+'feedback',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).catch(()=>{});}
       container.appendChild(sourceBox); scrollToBottom();
     }
     function showError(message){
@@ -178,7 +178,7 @@ PAGE_HTML = r'''<!DOCTYPE html>
         const data=JSON.parse(event.data); if(bot.box.classList.contains('loading')){bot.box.classList.remove('loading'); bot.textBox.className=''; bot.textBox.textContent=''; if(bot.label)bot.label.textContent='답변 요약'; if(bot.loadingSources){bot.loadingSources.remove(); bot.loadingSources=null;}} bot.textBox.textContent+=data.text||''; scrollToBottom();
       });
       activeStream.addEventListener('sources',(event)=>{
-        const data=JSON.parse(event.data); appendSources(bot.box,data.sources);
+        const data=JSON.parse(event.data); appendSources(bot.box,data.sources,question,bot.textBox.textContent);
       });
       activeStream.addEventListener('done',()=>{finishRequest();});
       activeStream.addEventListener('app_error',(event)=>{
