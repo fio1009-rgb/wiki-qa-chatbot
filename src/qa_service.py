@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """앞 실습에서 완성한 QA와 가드레일을 하나로 연결한 기능입니다."""
 import json
+import os
 import re
 import time
 from datetime import datetime, timezone
@@ -9,7 +10,7 @@ from pathlib import Path
 import qa
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-LOG_PATH = PROJECT_ROOT / "output" / "guardrail.jsonl"
+LOG_PATH = Path("/tmp/guardrail.jsonl") if os.environ.get("VERCEL") else PROJECT_ROOT / "output" / "guardrail.jsonl"
 MAX_INPUT_LENGTH = 500
 MAX_ATTEMPTS = 3
 NO_KNOWLEDGE_REPLY = "해당 정보를 찾을 수 없습니다."
