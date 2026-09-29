@@ -19,7 +19,8 @@ class handler(BaseHTTPRequestHandler):
         self._send_html(PAGE_HTML)
 
     def do_POST(self):
-        if urlparse(self.path).path == "/feedback":
+        parsed = urlparse(self.path)
+        if parsed.path == "/feedback" or parse_qs(parsed.query).get("path") == ["feedback"]:
             self._save_feedback()
             return
         length = int(self.headers.get("Content-Length", "0"))
