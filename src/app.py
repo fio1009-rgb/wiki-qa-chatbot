@@ -9,12 +9,14 @@ import os
 import re
 import socketserver
 import urllib.parse
+from pathlib import Path
 
 import qa_service
 
 
 EMPTY_MESSAGE = "질문을 입력해 주세요."
 ERROR_MESSAGE = "답변을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요."
+ASSET_ROOT = Path(__file__).resolve().parent.parent / "assets"
 
 
 def format_sse(event_name, data):
@@ -54,10 +56,11 @@ PAGE_HTML = r'''<!DOCTYPE html>
     .app { width:min(1240px,calc(100% - 48px)); height:min(820px,calc(100vh - 48px)); min-height:560px; margin:24px auto; display:grid; grid-template-rows:auto 1fr; background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.06)); border:1px solid rgba(255,255,255,.34); border-radius:22px; overflow:hidden; box-shadow:0 24px 80px rgba(0,0,0,.35); backdrop-filter:blur(22px); }
     header { padding:14px 22px; border-bottom:1px solid rgba(255,255,255,.2); background:rgba(7,21,47,.34); }
     .topbar { display:flex; align-items:center; justify-content:space-between; gap:16px; }
-    .brand { display:flex; align-items:center; gap:10px; } .brand-mark { width:28px; height:28px; display:grid; place-items:center; border-radius:9px; background:linear-gradient(135deg,#6df4ff,#5b63ff); font-weight:800; }
+    .brand { display:flex; align-items:center; gap:10px; } .brand-mark { width:34px; height:34px; object-fit:contain; filter:drop-shadow(0 0 8px rgba(0,224,255,.7)); }
     .workspace { min-height:0; display:grid; grid-template-columns:190px minmax(0,1fr) 230px; }
     .sidebar,.insight { min-width:0; padding:22px 16px; background:rgba(5,16,38,.22); }
     .sidebar { border-right:1px solid rgba(255,255,255,.14); } .insight { border-left:1px solid rgba(255,255,255,.14); }
+    .mascot { display:block; width:130px; height:150px; object-fit:contain; margin:4px auto 16px; filter:drop-shadow(0 0 14px rgba(0,224,255,.55)); }
     .eyebrow { margin:0 0 10px; color:#7feeff; font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
     .side-title { margin:0 0 18px; font-size:14px; line-height:1.45; } .hint { margin:0 0 10px; color:rgba(241,248,255,.65); font-size:11px; }
     .suggestion { width:100%; margin:6px 0; padding:8px 9px; border:1px solid rgba(255,255,255,.18); border-radius:9px; background:rgba(255,255,255,.08); color:#eefaff; font-size:11px; text-align:left; cursor:pointer; transition:.2s ease; }
@@ -68,7 +71,7 @@ PAGE_HTML = r'''<!DOCTYPE html>
     h1 { margin:0 0 6px; font-size:clamp(22px,2.5vw,30px); letter-spacing:-.03em; } header p { margin:0; color:rgba(241,248,255,.76); font-size:15px; }
     #chat { min-height:0; overflow-y:auto; padding:28px clamp(20px,5vw,64px); background:rgba(4,14,35,.22); }
     .message { max-width:min(720px,82%); margin:12px 0; padding:12px 15px; border-radius:14px; white-space:pre-wrap; line-height:1.6; overflow-wrap:anywhere; }
-    .message.loading { min-width:260px; color:#173257; background:rgba(255,255,255,.82); }
+    .message.loading { min-width:260px; color:#173257; background:rgba(255,255,255,.88); background-image:url('/assets/aurora-logo.png'); background-repeat:no-repeat; background-size:28px; background-position:12px center; padding-left:50px; }
     .message.loading::after { content:""; display:inline-block; width:1.1em; animation:dots 1.2s steps(4,end) infinite; }
     @keyframes dots { 0% { content:""; } 25% { content:"."; } 50% { content:".."; } 75%,100% { content:"..."; } }
     .user { margin-left:auto; background:linear-gradient(135deg,rgba(0,224,255,.75),rgba(76,112,255,.65)); border:1px solid rgba(255,255,255,.35); } .bot { margin-right:auto; background:rgba(255,255,255,.88); color:#10213e; border:1px solid rgba(255,255,255,.55); box-shadow:0 10px 30px rgba(0,0,0,.14); }
@@ -85,9 +88,9 @@ PAGE_HTML = r'''<!DOCTYPE html>
 </head>
 <body>
   <main class="app">
-    <header><div class="topbar"><div class="brand"><span class="brand-mark">A</span><h1>오로라 모빌리티 사내 위키 QA</h1></div><span class="eyebrow">미래형 지식 도우미</span></div><p>사내 규정과 업무 안내를 질문해 보세요.</p></header>
+    <header><div class="topbar"><div class="brand"><img class="brand-mark" src="/assets/aurora-logo.png" alt="오로라 로고"><h1>오로라 모빌리티 사내 위키 QA</h1></div><span class="eyebrow">미래형 지식 도우미</span></div><p>사내 규정과 업무 안내를 질문해 보세요.</p></header>
     <div class="workspace">
-      <aside class="sidebar"><p class="eyebrow">서비스</p><h2 class="side-title">오로라 모빌리티<br>사내 위키 QA</h2><p class="hint">예시 질문</p><button class="suggestion">연차는 며칠 부여되나요?</button><button class="suggestion">VPN 연결은 어떻게 하나요?</button><button class="suggestion">출장비 정산 기준은?</button></aside>
+      <aside class="sidebar"><img class="mascot" src="/assets/aurora-mascot.png" alt="오로라 안내 캐릭터"><p class="eyebrow">서비스</p><h2 class="side-title">오로라 모빌리티<br>사내 위키 QA</h2><p class="hint">예시 질문</p><button class="suggestion">연차는 며칠 부여되나요?</button><button class="suggestion">VPN 연결은 어떻게 하나요?</button><button class="suggestion">출장비 정산 기준은?</button></aside>
       <section class="conversation"><section id="chat" aria-live="polite"></section><div id="error" role="alert"></div><div class="composer"><input id="question" type="text" placeholder="질문을 입력하세요..." autocomplete="off"><button id="sendButton" type="button">전송</button></div></section>
       <aside class="insight"><section class="insight-card"><h2>답변 요약</h2><p>AI가 사내 위키를 바탕으로 질문에 답변합니다.</p></section><section class="insight-card"><h2>출처</h2><div>◉ 사내 위키 문서</div><div>◉ 정책·업무 가이드</div></section></aside>
     </div>
@@ -174,7 +177,13 @@ class Handler(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
         parsed=urllib.parse.urlparse(self.path)
         path=normalize_path(self.path)
-        if path in ('/','/index.html'): self._send_html(PAGE_HTML)
+        if path.startswith('/assets/'):
+            asset = (ASSET_ROOT / path.removeprefix('/assets/')).resolve()
+            if asset.is_file() and ASSET_ROOT in asset.parents:
+                body=asset.read_bytes(); content_type='image/png' if asset.suffix.lower()=='.png' else 'application/octet-stream'
+                self.send_response(200); self.send_header('Content-Type',content_type); self.send_header('Content-Length',str(len(body))); self.end_headers(); self.wfile.write(body)
+            else: self._send_json(404,{'error':'not_found'})
+        elif path in ('/','/index.html'): self._send_html(PAGE_HTML)
         elif path=='/stream': self._handle_stream(parsed.query)
         else: self._send_json(404,{'error':'not_found'})
 
