@@ -51,7 +51,7 @@ PAGE_HTML = r'''<!DOCTYPE html>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>오로라 모빌리티 사내 위키 QA</title>
   <style>
-    * { box-sizing: border-box; }
+    * { box-sizing: border-box; } html,body { overflow-x:hidden; }
     body { margin:0; min-height:100vh; font-family:"Spoqa Han Sans Neo","Pretendard","Noto Sans KR",Arial,sans-serif; background:radial-gradient(circle at 12% 15%,#1d5d9b 0,transparent 32%),radial-gradient(circle at 88% 18%,#6b2d9c 0,transparent 30%),linear-gradient(135deg,#07152f,#102c58 48%,#160f37); color:#f8fbff; }
     .app { width:min(1240px,calc(100% - 48px)); height:min(820px,calc(100vh - 48px)); min-height:560px; margin:24px auto; display:grid; grid-template-rows:auto 1fr; background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.06)); border:1px solid rgba(255,255,255,.34); border-radius:22px; overflow:hidden; box-shadow:0 24px 80px rgba(0,0,0,.35); backdrop-filter:blur(22px); }
     header { display:block; padding:10px 22px; border-bottom:1px solid rgba(255,255,255,.2); background:linear-gradient(90deg,rgba(30,91,145,.55),rgba(88,42,137,.5)); }
@@ -106,8 +106,8 @@ PAGE_HTML = r'''<!DOCTYPE html>
     #question::placeholder { color:rgba(241,248,255,.7); } #question:focus { border-color:#55e9ff; box-shadow:0 0 0 3px rgba(0,224,255,.18); }
     #sendButton { min-width:100px; padding:13px 18px; border:1px solid rgba(255,255,255,.35); border-radius:12px; background:linear-gradient(135deg,#00d9ff,#4d70ff); color:white; font-weight:700; cursor:pointer; box-shadow:0 8px 22px rgba(0,213,255,.24); }
     #question:disabled,#sendButton:disabled { opacity:.6; cursor:not-allowed; }
-    @media (max-width:900px) { .app { width:min(900px,calc(100% - 32px)); height:min(800px,calc(100vh - 32px)); margin:16px auto; } .workspace { grid-template-columns:160px minmax(0,1fr); } #chat { padding-inline:28px; } }
-    @media (max-width:600px) { body { background:linear-gradient(145deg,#07152f,#102c58 55%,#160f37); } .app { width:100%; height:100dvh; min-height:0; margin:0; border:0; border-radius:0; box-shadow:none; } header { display:block; padding:8px 14px; } .brand-mark { width:48px; height:48px; } .slogan-wrap { width:150px; padding:5px 8px; } .workspace { display:block; } .sidebar { display:none; } .conversation { height:calc(100dvh - 58px); } #chat { padding:18px 14px; } .message { max-width:90%; font-size:15px; } .bot { margin-left:44px; max-width:calc(100% - 44px); } .composer { padding:12px 12px max(14px,env(safe-area-inset-bottom)); gap:8px; } #question { font-size:15px; padding:12px; } #sendButton { min-width:76px; padding:12px 10px; } }
+    @media (max-width:900px) { .app { width:min(900px,calc(100% - 32px)); height:calc(100vh - 32px); min-height:0; margin:16px auto; } .workspace { grid-template-columns:160px minmax(0,1fr); } #chat { padding-inline:28px; } }
+    @media (max-width:600px) { body { background:linear-gradient(145deg,#07152f,#102c58 55%,#160f37); } .app { width:100%; height:100dvh; min-height:0; margin:0; border:0; border-radius:0; box-shadow:none; } header { display:block; padding:8px 14px; } .brand-mark { width:48px; height:48px; } .slogan-wrap { width:150px; padding:5px 8px; } .workspace { display:block; } .sidebar { display:none; } .conversation { height:calc(100dvh - 58px); } #chat { padding:18px 14px; } .message { max-width:90%; font-size:15px; } .message.loading,.message.bot { min-width:0; } .bot { margin-left:44px; max-width:calc(100% - 44px); } .composer { padding:12px 12px max(14px,env(safe-area-inset-bottom)); gap:8px; } #question { font-size:15px; padding:12px; } #sendButton { min-width:76px; padding:12px 10px; } }
   </style>
 </head>
 <body>
