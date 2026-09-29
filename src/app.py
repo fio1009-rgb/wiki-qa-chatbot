@@ -60,7 +60,8 @@ PAGE_HTML = r'''<!DOCTYPE html>
     .sidebar { border-right:1px solid rgba(255,255,255,.14); } .insight { border-left:1px solid rgba(255,255,255,.14); }
     .eyebrow { margin:0 0 10px; color:#7feeff; font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
     .side-title { margin:0 0 18px; font-size:14px; line-height:1.45; } .hint { margin:0 0 10px; color:rgba(241,248,255,.65); font-size:11px; }
-    .suggestion { width:100%; margin:6px 0; padding:8px 9px; border:1px solid rgba(255,255,255,.18); border-radius:9px; background:rgba(255,255,255,.08); color:#eefaff; font-size:11px; text-align:left; }
+    .suggestion { width:100%; margin:6px 0; padding:8px 9px; border:1px solid rgba(255,255,255,.18); border-radius:9px; background:rgba(255,255,255,.08); color:#eefaff; font-size:11px; text-align:left; cursor:pointer; transition:.2s ease; }
+    .suggestion:hover,.suggestion:focus-visible { background:rgba(0,224,255,.2); border-color:#55e9ff; outline:none; transform:translateY(-1px); }
     .insight-card { margin-bottom:12px; padding:13px; border:1px solid rgba(255,255,255,.38); border-radius:13px; background:rgba(255,255,255,.16); box-shadow:0 12px 24px rgba(0,0,0,.12); }
     .insight-card h2 { margin:0 0 7px; font-size:14px; } .insight-card p,.insight-card div { margin:0; color:rgba(241,248,255,.78); font-size:11px; line-height:1.55; }
     .conversation { min-width:0; min-height:0; display:grid; grid-template-rows:1fr auto; }
@@ -88,7 +89,7 @@ PAGE_HTML = r'''<!DOCTYPE html>
     <div class="workspace">
       <aside class="sidebar"><p class="eyebrow">서비스</p><h2 class="side-title">오로라 모빌리티<br>사내 위키 QA</h2><p class="hint">예시 질문</p><button class="suggestion">연차는 며칠 부여되나요?</button><button class="suggestion">VPN 연결은 어떻게 하나요?</button><button class="suggestion">출장비 정산 기준은?</button></aside>
       <section class="conversation"><section id="chat" aria-live="polite"></section><div id="error" role="alert"></div><div class="composer"><input id="question" type="text" placeholder="질문을 입력하세요..." autocomplete="off"><button id="sendButton" type="button">전송</button></div></section>
-      <aside class="insight"><section class="insight-card"><h2>Answer Card</h2><p>AI가 사내 위키를 바탕으로 질문에 답변합니다.</p></section><section class="insight-card"><h2>Sources</h2><div>◉ 사내 위키 문서</div><div>◉ 정책·업무 가이드</div></section></aside>
+      <aside class="insight"><section class="insight-card"><h2>답변 요약</h2><p>AI가 사내 위키를 바탕으로 질문에 답변합니다.</p></section><section class="insight-card"><h2>출처</h2><div>◉ 사내 위키 문서</div><div>◉ 정책·업무 가이드</div></section></aside>
     </div>
   </main>
   <script>
@@ -155,6 +156,7 @@ PAGE_HTML = r'''<!DOCTYPE html>
     }
     sendButton.addEventListener('click',ask);
     questionInput.addEventListener('keydown',(event)=>{if(event.key==='Enter')ask();});
+    document.querySelectorAll('.suggestion').forEach((button)=>button.addEventListener('click',()=>{questionInput.value=button.textContent.trim(); questionInput.focus();}));
   </script>
 </body>
 </html>'''
