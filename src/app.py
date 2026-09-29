@@ -57,7 +57,7 @@ PAGE_HTML = r'''<!DOCTYPE html>
     header { display:block; padding:10px 22px; border-bottom:1px solid rgba(255,255,255,.2); background:linear-gradient(90deg,rgba(30,91,145,.55),rgba(88,42,137,.5)); }
     header .brand { display:flex; } header .topbar { justify-content:space-between; } header p { display:none; }
     .topbar { display:flex; align-items:center; justify-content:space-between; gap:16px; }
-    .brand { display:flex; align-items:center; gap:10px; } .brand-mark { content:url('/assets/aurora-logo.png'); width:34px; height:34px; object-fit:contain; filter:drop-shadow(0 0 8px rgba(0,224,255,.7)); } .brand h1 { display:block; }
+    .brand { display:flex; align-items:center; gap:10px; } .brand-mark { content:url('/assets/aurora-logo.png'); width:68px; height:68px; object-fit:contain; filter:drop-shadow(0 0 10px rgba(0,224,255,.7)); } .brand h1 { display:block; }
     .slogan-wrap { width:min(300px,34vw); padding:7px 12px; border:1px solid rgba(255,255,255,.28); border-radius:13px; background:rgba(255,255,255,.12); backdrop-filter:blur(12px); }
     .slogan-image { width:100%; height:auto; display:block; object-fit:contain; }
     .workspace { min-height:0; display:grid; grid-template-columns:210px minmax(0,1fr); }
@@ -106,7 +106,7 @@ PAGE_HTML = r'''<!DOCTYPE html>
     #sendButton { min-width:100px; padding:13px 18px; border:1px solid rgba(255,255,255,.35); border-radius:12px; background:linear-gradient(135deg,#00d9ff,#4d70ff); color:white; font-weight:700; cursor:pointer; box-shadow:0 8px 22px rgba(0,213,255,.24); }
     #question:disabled,#sendButton:disabled { opacity:.6; cursor:not-allowed; }
     @media (max-width:900px) { .app { width:min(900px,calc(100% - 32px)); height:min(800px,calc(100vh - 32px)); margin:16px auto; } .workspace { grid-template-columns:160px minmax(0,1fr); } #chat { padding-inline:28px; } }
-    @media (max-width:600px) { body { background:linear-gradient(145deg,#07152f,#102c58 55%,#160f37); } .app { width:100%; height:100dvh; min-height:0; margin:0; border:0; border-radius:0; box-shadow:none; } header { display:block; padding:8px 14px; } .slogan-wrap { width:150px; padding:5px 8px; } .workspace { display:block; } .sidebar { display:none; } .conversation { height:calc(100dvh - 58px); } #chat { padding:18px 14px; } .message { max-width:90%; font-size:15px; } .bot { margin-left:44px; max-width:calc(100% - 44px); } .composer { padding:12px 12px max(14px,env(safe-area-inset-bottom)); gap:8px; } #question { font-size:15px; padding:12px; } #sendButton { min-width:76px; padding:12px 10px; } }
+    @media (max-width:600px) { body { background:linear-gradient(145deg,#07152f,#102c58 55%,#160f37); } .app { width:100%; height:100dvh; min-height:0; margin:0; border:0; border-radius:0; box-shadow:none; } header { display:block; padding:8px 14px; } .brand-mark { width:48px; height:48px; } .slogan-wrap { width:150px; padding:5px 8px; } .workspace { display:block; } .sidebar { display:none; } .conversation { height:calc(100dvh - 58px); } #chat { padding:18px 14px; } .message { max-width:90%; font-size:15px; } .bot { margin-left:44px; max-width:calc(100% - 44px); } .composer { padding:12px 12px max(14px,env(safe-area-inset-bottom)); gap:8px; } #question { font-size:15px; padding:12px; } #sendButton { min-width:76px; padding:12px 10px; } }
   </style>
 </head>
 <body>
