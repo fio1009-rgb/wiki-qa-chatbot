@@ -75,11 +75,11 @@ PAGE_HTML = r'''<!DOCTYPE html>
     .suggestion:hover,.suggestion:focus-visible { background:rgba(0,224,255,.2); border-color:#55e9ff; outline:none; transform:translateY(-1px); }
     .insight-card { margin-bottom:12px; padding:13px; border:1px solid rgba(255,255,255,.38); border-radius:13px; background:rgba(255,255,255,.16); box-shadow:0 12px 24px rgba(0,0,0,.12); }
     .insight-card h2 { margin:0 0 7px; font-size:14px; } .insight-card p,.insight-card div { margin:0; color:rgba(241,248,255,.78); font-size:11px; line-height:1.55; }
-    .conversation { min-width:0; min-height:0; display:grid; grid-template-rows:auto 1fr auto; }
+    .conversation { min-width:0; min-height:0; display:flex; flex-direction:column; }
     .main-banner { display:none; }
     .main-banner img { width:min(300px,60%); height:auto; display:inline-block; }
     h1 { margin:0 0 6px; font-size:clamp(22px,2.5vw,30px); letter-spacing:-.03em; } header p { margin:0; color:rgba(241,248,255,.76); font-size:15px; }
-    #chat { min-height:0; overflow-y:auto; padding:28px clamp(20px,5vw,64px); background:rgba(4,14,35,.22); }
+    #chat { flex:1; min-height:0; overflow-y:auto; padding:28px clamp(20px,5vw,64px); background:rgba(4,14,35,.22); }
     .message { max-width:min(720px,82%); margin:12px 0; padding:12px 15px; border-radius:14px; white-space:pre-wrap; line-height:1.6; overflow-wrap:anywhere; }
     .message.loading,.message.bot { min-width:320px; color:#10213e; background:linear-gradient(145deg,rgba(177,247,255,.82),rgba(147,211,255,.52) 55%,rgba(204,171,255,.48)) !important; background-repeat:no-repeat; background-size:cover; background-position:center; padding-left:50px; border:1px solid rgba(151,249,255,.8) !important; box-shadow:0 14px 34px rgba(0,0,0,.2); backdrop-filter:blur(16px); }
     .message.loading { background-image:url('/assets/aurora-logo.png'),linear-gradient(145deg,rgba(177,247,255,.82),rgba(147,211,255,.52) 55%,rgba(204,171,255,.48)) !important; background-size:28px,cover; background-position:12px 13px,center; padding-left:50px; }
