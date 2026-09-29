@@ -53,13 +53,13 @@ PAGE_HTML = r'''<!DOCTYPE html>
   <style>
     * { box-sizing: border-box; }
     body { margin:0; min-height:100vh; font-family:"Spoqa Han Sans Neo","Pretendard","Noto Sans KR",Arial,sans-serif; background:radial-gradient(circle at 12% 15%,#1d5d9b 0,transparent 32%),radial-gradient(circle at 88% 18%,#6b2d9c 0,transparent 30%),linear-gradient(135deg,#07152f,#102c58 48%,#160f37); color:#f8fbff; }
-    .app { width:min(1240px,calc(100% - 48px)); height:min(820px,calc(100vh - 48px)); min-height:560px; margin:24px auto; display:grid; grid-template-rows:auto 1fr; background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.06)); border:1px solid rgba(255,255,255,.34); border-radius:22px; overflow:hidden; box-shadow:0 24px 80px rgba(0,0,0,.35); backdrop-filter:blur(22px); }
-    header { padding:14px 22px; border-bottom:1px solid rgba(255,255,255,.2); background:rgba(7,21,47,.34); }
+    .app { width:min(1240px,calc(100% - 48px)); height:min(820px,calc(100vh - 48px)); min-height:560px; margin:24px auto; display:grid; grid-template-rows:1fr; background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.06)); border:1px solid rgba(255,255,255,.34); border-radius:22px; overflow:hidden; box-shadow:0 24px 80px rgba(0,0,0,.35); backdrop-filter:blur(22px); }
+    header { display:none; }
     .topbar { display:flex; align-items:center; justify-content:space-between; gap:16px; }
     .brand { display:flex; align-items:center; gap:10px; } .brand-mark { width:34px; height:34px; object-fit:contain; filter:drop-shadow(0 0 8px rgba(0,224,255,.7)); }
     .slogan-wrap { width:min(300px,34vw); padding:7px 12px; border:1px solid rgba(255,255,255,.28); border-radius:13px; background:rgba(255,255,255,.12); backdrop-filter:blur(12px); }
     .slogan-image { width:100%; height:auto; display:block; object-fit:contain; }
-    .workspace { min-height:0; display:grid; grid-template-columns:190px minmax(0,1fr); }
+    .workspace { min-height:0; display:grid; grid-template-columns:210px minmax(0,1fr); }
     .sidebar { min-width:0; padding:22px 16px; background:rgba(5,16,38,.22); border-right:1px solid rgba(255,255,255,.14); }
     .mascot { display:block; width:130px; height:150px; object-fit:contain; margin:4px auto 16px; filter:drop-shadow(0 0 14px rgba(0,224,255,.55)); }
     .wordmark { display:flex; align-items:center; gap:8px; margin-bottom:18px; font-size:12px; font-weight:800; letter-spacing:.08em; }
@@ -71,7 +71,9 @@ PAGE_HTML = r'''<!DOCTYPE html>
     .suggestion:hover,.suggestion:focus-visible { background:rgba(0,224,255,.2); border-color:#55e9ff; outline:none; transform:translateY(-1px); }
     .insight-card { margin-bottom:12px; padding:13px; border:1px solid rgba(255,255,255,.38); border-radius:13px; background:rgba(255,255,255,.16); box-shadow:0 12px 24px rgba(0,0,0,.12); }
     .insight-card h2 { margin:0 0 7px; font-size:14px; } .insight-card p,.insight-card div { margin:0; color:rgba(241,248,255,.78); font-size:11px; line-height:1.55; }
-    .conversation { min-width:0; min-height:0; display:grid; grid-template-rows:1fr auto; }
+    .conversation { min-width:0; min-height:0; display:grid; grid-template-rows:auto 1fr auto; }
+    .main-banner { margin:18px 22px 0; padding:10px 18px; border:1px solid rgba(255,255,255,.28); border-radius:14px; background:rgba(255,255,255,.11); text-align:right; }
+    .main-banner img { width:min(300px,60%); height:auto; display:inline-block; }
     h1 { margin:0 0 6px; font-size:clamp(22px,2.5vw,30px); letter-spacing:-.03em; } header p { margin:0; color:rgba(241,248,255,.76); font-size:15px; }
     #chat { min-height:0; overflow-y:auto; padding:28px clamp(20px,5vw,64px); background:rgba(4,14,35,.22); }
     .message { max-width:min(720px,82%); margin:12px 0; padding:12px 15px; border-radius:14px; white-space:pre-wrap; line-height:1.6; overflow-wrap:anywhere; }
@@ -95,8 +97,8 @@ PAGE_HTML = r'''<!DOCTYPE html>
     #question::placeholder { color:rgba(241,248,255,.7); } #question:focus { border-color:#55e9ff; box-shadow:0 0 0 3px rgba(0,224,255,.18); }
     #sendButton { min-width:100px; padding:13px 18px; border:1px solid rgba(255,255,255,.35); border-radius:12px; background:linear-gradient(135deg,#00d9ff,#4d70ff); color:white; font-weight:700; cursor:pointer; box-shadow:0 8px 22px rgba(0,213,255,.24); }
     #question:disabled,#sendButton:disabled { opacity:.6; cursor:not-allowed; }
-    @media (max-width:900px) { .app { width:min(900px,calc(100% - 32px)); height:min(800px,calc(100vh - 32px)); margin:16px auto; } .workspace { grid-template-columns:150px minmax(0,1fr); } #chat { padding-inline:28px; } }
-    @media (max-width:600px) { body { background:linear-gradient(145deg,#07152f,#102c58 55%,#160f37); } .app { width:100%; height:100dvh; min-height:0; margin:0; border:0; border-radius:0; box-shadow:none; } header { padding:12px 14px; } .workspace { display:block; } .sidebar { display:none; } .conversation { height:calc(100dvh - 65px); } h1 { font-size:18px; } .slogan-wrap { width:150px; padding:5px 8px; } header p { display:none; } #chat { padding:18px 14px; } .message { max-width:90%; font-size:15px; } .composer { padding:12px 12px max(14px,env(safe-area-inset-bottom)); gap:8px; } #question { font-size:15px; padding:12px; } #sendButton { min-width:76px; padding:12px 10px; } }
+    @media (max-width:900px) { .app { width:min(900px,calc(100% - 32px)); height:min(800px,calc(100vh - 32px)); margin:16px auto; } .workspace { grid-template-columns:160px minmax(0,1fr); } #chat { padding-inline:28px; } }
+    @media (max-width:600px) { body { background:linear-gradient(145deg,#07152f,#102c58 55%,#160f37); } .app { width:100%; height:100dvh; min-height:0; margin:0; border:0; border-radius:0; box-shadow:none; } header { display:none; } .workspace { display:block; } .sidebar { display:none; } .conversation { height:100dvh; } .main-banner { margin:12px 14px 0; text-align:center; } .main-banner img { width:190px; } #chat { padding:18px 14px; } .message { max-width:90%; font-size:15px; } .composer { padding:12px 12px max(14px,env(safe-area-inset-bottom)); gap:8px; } #question { font-size:15px; padding:12px; } #sendButton { min-width:76px; padding:12px 10px; } }
   </style>
 </head>
 <body>
@@ -104,7 +106,7 @@ PAGE_HTML = r'''<!DOCTYPE html>
     <header><div class="topbar"><div class="brand"><img class="brand-mark" src="/assets/aurora-logo.png" alt="오로라 로고"><h1>오로라 모빌리티 사내 위키 QA</h1></div><div class="slogan-wrap"><img class="slogan-image" src="/assets/aurora-slogan.png" alt="이동의 미래를 만드는 지식 파트너 Knowledge Partner for the Future of Mobility"></div></div><p>사내 규정과 업무 안내를 질문해 보세요.</p></header>
     <div class="workspace">
       <aside class="sidebar"><div class="wordmark"><img src="/assets/aurora-logo.png" alt="오로라 로고"><span>AURORA<br>MOBILITY</span></div><button class="nav-item">⌂ 홈</button><button class="nav-item">⌕ 문서 검색</button><button class="nav-item">☆ 즐겨찾기</button><button class="nav-item">◷ 최근 대화</button><button class="nav-item">? 서비스 안내</button><img class="mascot" src="/assets/aurora-mascot.png" alt="오로라 안내 캐릭터"><p class="hint">예시 질문</p><button class="suggestion">연차는 매년 며칠 부여되나요?</button><button class="suggestion">사용하지 않은 연차는 며칠까지 이월할 수 있나요?</button><button class="suggestion">국내 출장 교통비와 숙박비 정산 기준은 무엇인가요?</button></aside>
-      <section class="conversation"><section id="chat" aria-live="polite"></section><div id="error" role="alert"></div><div class="composer"><input id="question" type="text" placeholder="질문을 입력하세요..." autocomplete="off"><button id="sendButton" type="button">전송</button></div></section>
+      <section class="conversation"><div class="main-banner"><img src="/assets/aurora-slogan.png" alt="이동의 미래를 만드는 지식 파트너"></div><section id="chat" aria-live="polite"></section><div id="error" role="alert"></div><div class="composer"><input id="question" type="text" placeholder="질문을 입력하세요..." autocomplete="off"><button id="sendButton" type="button">전송</button></div></section>
     </div>
   </main>
   <script>
