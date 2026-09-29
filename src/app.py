@@ -95,7 +95,7 @@ PAGE_HTML = r'''<!DOCTYPE html>
 </head>
 <body>
   <main class="app">
-    <header><div class="topbar"><div class="brand"><img class="brand-mark" src="/assets/aurora-logo.png" alt="오로라 로고"><h1>오로라 모빌리티 사내 위키 QA</h1></div><span class="eyebrow">미래형 지식 도우미</span></div><p>사내 규정과 업무 안내를 질문해 보세요.</p></header>
+    <header><div class="topbar"><div class="brand"><img class="brand-mark" src="/assets/aurora-logo.png" alt="오로라 로고"><h1>오로라 모빌리티 사내 위키 QA</h1></div><span class="eyebrow">이동의 미래를 만드는 지식 파트너</span></div><p>사내 규정과 업무 안내를 질문해 보세요.</p></header>
     <div class="workspace">
       <aside class="sidebar"><img class="mascot" src="/assets/aurora-mascot.png" alt="오로라 안내 캐릭터"><p class="eyebrow">서비스</p><h2 class="side-title">오로라 모빌리티<br>사내 위키 QA</h2><p class="hint">예시 질문</p><button class="suggestion">연차는 매년 며칠 부여되나요?</button><button class="suggestion">사용하지 않은 연차는 며칠까지 이월할 수 있나요?</button><button class="suggestion">국내 출장 교통비와 숙박비 정산 기준은 무엇인가요?</button></aside>
       <section class="conversation"><section id="chat" aria-live="polite"></section><div id="error" role="alert"></div><div class="composer"><input id="question" type="text" placeholder="질문을 입력하세요..." autocomplete="off"><button id="sendButton" type="button">전송</button></div></section>
