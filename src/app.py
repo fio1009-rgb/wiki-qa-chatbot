@@ -119,8 +119,8 @@ PAGE_HTML = r'''<!DOCTYPE html>
     function appendSources(container,sources){
       if(!Array.isArray(sources)||sources.length===0)return;
       const sourceBox=document.createElement('div'); sourceBox.className='source-box';
-      const title=document.createElement('strong'); title.textContent='Sources'; sourceBox.appendChild(title);
-      sources.forEach((source)=>{const item=document.createElement('div');item.textContent=source;sourceBox.appendChild(item);});
+      const title=document.createElement('strong'); title.textContent='출처'; sourceBox.appendChild(title);
+      [...new Set(sources)].forEach((source)=>{const item=document.createElement('div');item.textContent=source;sourceBox.appendChild(item);});
       container.appendChild(sourceBox); scrollToBottom();
     }
     function showError(message){
@@ -144,7 +144,7 @@ PAGE_HTML = r'''<!DOCTYPE html>
       showError(''); appendMessage('user',question); questionInput.value=''; setLoading(true);
       const bot=appendMessage('bot',''); bot.box.classList.add('loading'); bot.label=bot.box.querySelector('.answer-label'); if(bot.label)bot.label.textContent='AI Thinking 중입니다.';
       bot.textBox.className='loading-copy'; bot.textBox.textContent='오로라 모빌리티 임직원을 위한 QA 시스템입니다.\n답변이 생성되는 중입니다...\n답변이 완료되면 이곳에 답변이 표시됩니다.\n답변이 길어질 수 있으니 잠시만 기다려주세요.';
-      bot.loadingSources=document.createElement('div'); bot.loadingSources.className='loading-sources'; bot.loadingSources.innerHTML='<strong>Sources</strong><div>◉ 오로라 모빌리티 사내 위키 QA</div><div>◉ 오로라 모빌리티 사내 위키 QA</div>'; bot.box.appendChild(bot.loadingSources);
+      bot.loadingSources=document.createElement('div'); bot.loadingSources.className='loading-sources'; bot.loadingSources.innerHTML='<strong>출처</strong><div>◉ 오로라 모빌리티 사내 위키 QA</div>'; bot.box.appendChild(bot.loadingSources);
       activeStream=new EventSource(BASE_PATH+'stream?q='+encodeURIComponent(question));
       activeStream.addEventListener('chunk',(event)=>{
         const data=JSON.parse(event.data); if(bot.box.classList.contains('loading')){bot.box.classList.remove('loading'); bot.textBox.className=''; bot.textBox.textContent=''; if(bot.label)bot.label.textContent='답변 요약'; if(bot.loadingSources){bot.loadingSources.remove(); bot.loadingSources=null;}} bot.textBox.textContent+=data.text||''; scrollToBottom();
