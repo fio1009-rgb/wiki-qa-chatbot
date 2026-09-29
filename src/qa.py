@@ -119,7 +119,7 @@ def answer(question, mode=None):
     result = llm.answer_with_source(question, _knowledge(index))
     section = _find_section(index, str(result.get("doc", "")).strip(), str(result.get("heading", "")).strip())
     answer_text = str(result.get("answer", "")).strip()
-    if not section or not answer_text or answer_text == NO_KNOWLEDGE_REPLY:
+    if not section or not answer_text or answer_text == "해당 정보를 찾을 수 없습니다.":
         answer_text = "해당 정보를 찾을 수 없습니다."
         sources = []
     else:
