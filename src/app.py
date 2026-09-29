@@ -84,7 +84,8 @@ PAGE_HTML = r'''<!DOCTYPE html>
     .loading-sources div { margin:4px 0; font-size:11px; }
     .message.loading::after { content:""; display:inline-block; width:1.1em; animation:dots 1.2s steps(4,end) infinite; }
     @keyframes dots { 0% { content:""; } 25% { content:"."; } 50% { content:".."; } 75%,100% { content:"..."; } }
-    .user { margin-left:auto; background:linear-gradient(135deg,rgba(0,224,255,.75),rgba(76,112,255,.65)); border:1px solid rgba(255,255,255,.35); }
+    .user { display:block; width:fit-content; max-width:min(720px,82%); margin:12px 0 12px auto; background:linear-gradient(135deg,rgba(0,224,255,.75),rgba(76,112,255,.65)); border:1px solid rgba(255,255,255,.35); }
+    .bot { display:block; width:fit-content; max-width:min(720px,82%); margin:12px auto 12px 0; }
     .source-box { margin-top:12px; padding:10px 11px; border:1px solid rgba(255,255,255,.62); border-radius:12px; background:rgba(255,255,255,.3); color:#173b5b; font-size:12px; }
     .source-box strong { display:block; margin-bottom:7px; color:#10213e; font-size:13px; }
     .answer-label { margin-bottom:8px; color:#173b5b; font-size:13px; font-weight:800; letter-spacing:.02em; }
